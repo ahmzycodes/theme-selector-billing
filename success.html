@@ -7,39 +7,42 @@
   <h2>Payment Successful 🎉</h2>
   <p>Verifying your subscription…</p>
 
-  <script>
-    async function verifyPayment() {
-      const params = new URLSearchParams(window.location.search);
-      const sessionId = params.get("session_id");
+  <script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-      if (!sessionId) {
-        document.body.innerHTML = "Missing session id.";
-        return;
-      }
+const supabase = createClient(
+  'https://qwpiggqeyctejvrgjxim.supabase.co', 
+  'YOUR_SUPABASE_ANON_KEY' // put your anon key here
+)
 
-      try {
-        const res = await fetch("https://qwpiggqeyctejvrgjxim.supabase.co/functions/v1/verify-stripe-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ session_id })
-        });
+async function verifyPayment() {
+  const params = new URLSearchParams(window.location.search)
+  const session_id = params.get('session_id')
 
-        const data = await res.json();
+  if (!session_id) {
+    document.body.innerHTML = "Missing session id."
+    return
+  }
 
-        if (data.success) {
-          document.body.innerHTML =
-            "✅ Pro unlocked. You can close this page.";
-        } else {
-          document.body.innerHTML =
-            "Verification failed. Contact support.";
-        }
+  const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
+    body: { session_id }
+  })
 
-      } catch (err) {
-        document.body.innerHTML = "Server error.";
-      }
-    }
+  if (error) {
+    document.body.innerHTML = "Server error."
+    console.error(error)
+    return
+  }
 
-    verifyPayment();
-  </script>
+  if (data.success) {
+    document.body.innerHTML = "✅ Pro unlocked. You can close this page."
+  } else {
+    document.body.innerHTML = "Verification failed. Contact support."
+  }
+}
+
+verifyPayment()
+</script>
+
 </body>
 </html>
