@@ -21,7 +21,7 @@
         const res = await fetch("https://qwpiggqeyctejvrgjxim.supabase.co/functions/v1/verify-stripe-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId })
+          body: JSON.stringify({ session_id })
         });
 
         const data = await res.json();
