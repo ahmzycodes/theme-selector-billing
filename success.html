@@ -18,7 +18,7 @@
       }
 
       try {
-        const res = await fetch("YOUR_SUPABASE_EDGE_FUNCTION_URL", {
+        const res = await fetch("https://qwpiggqeyctejvrgjxim.supabase.co/functions/v1/verify-stripe-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ sessionId })
