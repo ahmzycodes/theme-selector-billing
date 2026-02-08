@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Success</title>
+</head>
+<body>
+  <h2>Payment Successful 🎉</h2>
+  <p>Verifying your subscription…</p>
+
+  <script>
+    async function verifyPayment() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get("session_id");
+
+      if (!sessionId) {
+        document.body.innerHTML = "Missing session id.";
+        return;
+      }
+
+      try {
+        const res = await fetch("YOUR_SUPABASE_EDGE_FUNCTION_URL", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          document.body.innerHTML =
+            "✅ Pro unlocked. You can close this page.";
+        } else {
+          document.body.innerHTML =
+            "Verification failed. Contact support.";
+        }
+
+      } catch (err) {
+        document.body.innerHTML = "Server error.";
+      }
+    }
+
+    verifyPayment();
+  </script>
+</body>
+</html>
