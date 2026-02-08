@@ -16,29 +16,31 @@ const supabase = createClient(
 )
 
 async function verifyPayment() {
-  const params = new URLSearchParams(window.location.search)
-  const session_id = params.get('session_id')
+const params = new URLSearchParams(window.location.search)
+const session_id = params.get('session_id')
 
-  if (!session_id) {
-    document.body.innerHTML = "Missing session id."
-    return
-  }
+if (!session_id) {
+document.body.innerHTML = "Missing session id."
+return
+}
 
-  const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
-    body: { session_id }
-  })
+const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
+body: { session_id }
+})
 
-  if (error) {
-    document.body.innerHTML = "Server error."
-    console.error(error)
-    return
-  }
+console.log("Function data:", data)
+console.log("Function error:", error)
 
-  if (data.success) {
-    document.body.innerHTML = "✅ Pro unlocked. You can close this page."
-  } else {
-    document.body.innerHTML = "Verification failed. Contact support."
-  }
+if (error) {
+document.body.innerHTML = "Server error."
+return
+}
+
+if (data && data.success === true) {
+document.body.innerHTML = "✅ Pro unlocked. You can close this page."
+} else {
+document.body.innerHTML = "Verification failed. Contact support."
+}
 }
 
 verifyPayment()
