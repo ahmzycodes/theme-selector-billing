@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #0f172a;
       color: #f8fafc;
       display: flex;
@@ -41,27 +41,13 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
+      background: #64748b;
+      color: white;
       transition: 0.2s ease;
     }
 
-    .primary {
-      background: #6366f1;
-      color: white;
-      margin-right: 10px;
-    }
-
-    .primary:hover {
-      background: #4f46e5;
-    }
-
-    .secondary {
-      background: transparent;
-      border: 1px solid #64748b;
-      color: #cbd5e1;
-    }
-
-    .secondary:hover {
-      background: #334155;
+    .button:hover {
+      background: #475569;
     }
 
     .footer {
@@ -76,21 +62,25 @@
   <div class="card">
     <h2>Payment Cancelled</h2>
     <p>
-      Your subscription was not completed. No charges were made.
+      Your subscription was not completed and no charges were made.
+      <br><br>
+      You can restart checkout anytime from the extension.
     </p>
 
-    <a href="https://ahmzycodes.github.io/theme-selector-billing/" class="button primary">
-      Try Again
-    </a>
-
-    <a href="#" class="button secondary" onclick="window.close(); return false;">
+    <button class="button" onclick="closeWindow()">
       Close Window
-    </a>
+    </button>
 
     <div class="footer">
-      You can restart checkout anytime from the extension.
+      If this tab does not close automatically, you can close it manually.
     </div>
   </div>
+
+  <script>
+    function closeWindow() {
+      window.close();
+    }
+  </script>
 
 </body>
 </html>
