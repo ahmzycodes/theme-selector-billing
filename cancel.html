@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Cancelled</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 16px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    h2 {
+      margin-bottom: 16px;
+    }
+
+    p {
+      opacity: 0.85;
+      margin-bottom: 24px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .primary {
+      background: #6366f1;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .primary:hover {
+      background: #4f46e5;
+    }
+
+    .secondary {
+      background: transparent;
+      border: 1px solid #64748b;
+      color: #cbd5e1;
+    }
+
+    .secondary:hover {
+      background: #334155;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Payment Cancelled</h2>
+    <p>
+      Your subscription was not completed. No charges were made.
+    </p>
+
+    <a href="https://ahmzycodes.github.io/theme-selector-billing/" class="button primary">
+      Try Again
+    </a>
+
+    <a href="#" class="button secondary" onclick="window.close(); return false;">
+      Close Window
+    </a>
+
+    <div class="footer">
+      You can restart checkout anytime from the extension.
+    </div>
+  </div>
+
+</body>
+</html>
