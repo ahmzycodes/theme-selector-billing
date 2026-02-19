@@ -74,8 +74,8 @@
       }
 
       try {
-        const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
-          body: { session_id }
+        //const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
+          //body: { session_id }
         })
 
         console.log("Fallback verify data:", data)
