@@ -55,44 +55,24 @@
   </div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    // With verify-stripe-session deprecated, we only display a success message.
+    // Webhooks are now fully responsible for updating the database and subscription state.
+    const statusEl = document.getElementById("status");
 
-    const supabase = createClient(
-  'https://qwpiggqeyctejvrgjxim.supabase.co', 
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3cGlnZ3FleWN0ZWp2cmdqeGltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1MTgwMjMsImV4cCI6MjA4NjA5NDAyM30.ZLUSkcb8fPtb6VoR4fIeQUEuZhG1cwPrjajll-Tw12Y' // my anon key
-)
+    const params = new URLSearchParams(window.location.search);
+    const session_id = params.get("session_id");
 
-    const statusEl = document.getElementById("status")
-
-    async function verifyPaymentFallback() {
-      const params = new URLSearchParams(window.location.search)
-      const session_id = params.get('session_id')
-
-      if (!session_id) {
-        statusEl.textContent = "Payment received. You may close this page."
-        return
-      }
-
-      try {
-        console.log("Not gonna get to verify-stripe-session edge F");
-        //const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
-          //body: { session_id }
-        //})
-
-        //console.log("Fallback verify data:", data)
-        //console.log("Fallback verify error:", error)
-
-        // 🔥 Important: Do NOT block UX if this fails
-        statusEl.textContent = "Subscription activated. You may close this page."
-      } catch (err) {
-        console.error(err)
-        statusEl.textContent = "Subscription processing. You may close this page."
-      }
+    if (!session_id) {
+      statusEl.textContent = "Payment received. Your subscription will be activated shortly. You may close this page.";
+    } else {
+      statusEl.textContent = "Payment successful! Your subscription will be activated shortly via our secure webhook system.";
     }
 
-    verifyPaymentFallback()
+    // Optional: Add a small delay with a friendly message to reassure users
+    setTimeout(() => {
+      statusEl.textContent += " ✅";
+    }, 1500);
   </script>
 
 </body>
 </html>
-
