@@ -33,6 +33,7 @@
     p {
       opacity: 0.85;
       margin-bottom: 24px;
+      line-height: 1.5;
     }
 
     .button {
@@ -44,6 +45,7 @@
       background: #64748b;
       color: white;
       transition: 0.2s ease;
+      cursor: pointer;
     }
 
     .button:hover {
@@ -60,11 +62,10 @@
 <body>
 
   <div class="card">
-    <h2>Payment Cancelled</h2>
+    <h2>Payment Cancelled ❌</h2>
     <p>
-      Your subscription was not completed and no charges were made.
-      <br><br>
-      You can restart checkout anytime from the extension.
+      Your subscription was not completed and no charges were made.<br><br>
+      You can restart checkout anytime from the extension or your account.
     </p>
 
     <button class="button" onclick="closeWindow()">
@@ -77,9 +78,15 @@
   </div>
 
   <script>
+    // Attempt to close the window gracefully
     function closeWindow() {
       window.close();
     }
+
+    // Optional: auto-close after 10 seconds
+    setTimeout(() => {
+      window.close();
+    }, 10000);
   </script>
 
 </body>
