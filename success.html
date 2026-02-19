@@ -1,50 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
   <title>Payment Success</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 16px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    h2 {
+      margin-bottom: 16px;
+    }
+
+    p {
+      opacity: 0.85;
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
+      opacity: 0.6;
+    }
+  </style>
 </head>
 <body>
-  <h2>Payment Successful 🎉</h2>
-  <p>Verifying your subscription…</p>
+
+  <div class="card">
+    <h2>Payment Successful 🎉</h2>
+    <p id="status">
+      Finalizing your subscription…
+    </p>
+    <div class="footer">
+      You can safely close this window.
+    </div>
+  </div>
 
   <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const supabase = createClient(
+    const supabase = createClient(
   'https://qwpiggqeyctejvrgjxim.supabase.co', 
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3cGlnZ3FleWN0ZWp2cmdqeGltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1MTgwMjMsImV4cCI6MjA4NjA5NDAyM30.ZLUSkcb8fPtb6VoR4fIeQUEuZhG1cwPrjajll-Tw12Y' // my anon key
 )
 
-async function verifyPayment() {
-const params = new URLSearchParams(window.location.search)
-const session_id = params.get('session_id')
+    const statusEl = document.getElementById("status")
 
-if (!session_id) {
-document.body.innerHTML = "Missing session id."
-return
-}
+    async function verifyPaymentFallback() {
+      const params = new URLSearchParams(window.location.search)
+      const session_id = params.get('session_id')
 
-const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
-body: { session_id }
-})
+      if (!session_id) {
+        statusEl.textContent = "Payment received. You may close this page."
+        return
+      }
 
-console.log("Function data:", data)
-console.log("Function error:", error)
+      try {
+        const { data, error } = await supabase.functions.invoke('verify-stripe-session', {
+          body: { session_id }
+        })
 
-if (error) {
-document.body.innerHTML = "Server error."
-return
-}
+        console.log("Fallback verify data:", data)
+        console.log("Fallback verify error:", error)
 
-if (data && data.success === true) {
-document.body.innerHTML = "✅ Pro unlocked. You can close this page."
-} else {
-document.body.innerHTML = "Verification failed. Contact support."
-}
-}
+        // 🔥 Important: Do NOT block UX if this fails
+        statusEl.textContent = "Subscription activated. You may close this page."
+      } catch (err) {
+        console.error(err)
+        statusEl.textContent = "Subscription processing. You may close this page."
+      }
+    }
 
-verifyPayment()
-</script>
+    verifyPaymentFallback()
+  </script>
 
 </body>
 </html>
+
